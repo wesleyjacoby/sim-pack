@@ -993,3 +993,19 @@ code {
 .topbar.page .topbar-in {
 	min-height: 64px;
 }
+
+/* Status bar is transparent (black-translucent): paint a dark strip behind it so the clock stays readable */
+body::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: env(safe-area-inset-top);
+	background: var(--hero);
+	z-index: 30;
+	pointer-events: none;
+}
+#root > main:first-child {
+	padding-top: calc(env(safe-area-inset-top) + 20px);
+}
