@@ -48,7 +48,7 @@
 }
 html {
 	-webkit-text-size-adjust: 100%;
-	background: var(--hero);
+	background: var(--bg);
 }
 body {
 	margin: 0;
@@ -552,7 +552,7 @@ code {
 	letter-spacing: 0.13em;
 	text-transform: uppercase;
 	color: var(--ink);
-	scroll-margin-top: 130px;
+	scroll-margin-top: calc(130px + var(--strip));
 }
 .prose h2::before {
 	content: "";
@@ -572,7 +572,7 @@ code {
 	letter-spacing: -0.01em;
 	margin: 30px 0 10px;
 	font-weight: 700;
-	scroll-margin-top: 130px;
+	scroll-margin-top: calc(130px + var(--strip));
 }
 .prose ul,
 .prose ol {
@@ -985,30 +985,35 @@ code {
 	color: var(--ink);
 }
 
-/* iOS/iPadOS: keep the header clear of the status bar and its blur */
-.topbar {
-	padding-top: calc(env(safe-area-inset-top) + 10px);
+/* iPad/iPhone Home Screen app: the system draws its own status bar over the top of the page.
+   Leave a strip in the page colour there so it sits on a light (or dark) surface, and start the header below it.
+   Change --strip-min to make the strip taller or shorter. */
+:root {
+	--strip-min: 32px;
+	--strip: 0px;
 }
-.topbar.page {
-	backdrop-filter: none;
-	-webkit-backdrop-filter: none;
+@media (display-mode: standalone) {
+	:root {
+		--strip: max(env(safe-area-inset-top), var(--strip-min));
+	}
+	body {
+		padding-top: var(--strip);
+	}
+	body::before {
+		content: "";
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: var(--strip);
+		background: var(--bg);
+		z-index: 40;
+		pointer-events: none;
+	}
+	.topbar {
+		top: var(--strip);
+	}
 }
 .topbar.page .topbar-in {
 	min-height: 64px;
-}
-
-/* Status bar is transparent (black-translucent): paint a dark strip behind it so the clock stays readable */
-body::before {
-	content: "";
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: env(safe-area-inset-top);
-	background: var(--hero);
-	z-index: 30;
-	pointer-events: none;
-}
-#root > main:first-child {
-	padding-top: calc(env(safe-area-inset-top) + 20px);
 }

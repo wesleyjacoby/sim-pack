@@ -31,8 +31,8 @@ export default defineConfig({
         orientation: 'any',
         start_url: './',
         scope: './',
-        background_color: '#15181e',
-        theme_color: '#15181e',
+        background_color: '#f4f4f1',
+        theme_color: '#f4f4f1',
         categories: ['education', 'productivity'],
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
