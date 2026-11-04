@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useApp } from '../store';
 import { download, ImportButton } from '../ui';
+import { checkForUpdate } from '../pwa';
 
 export default function Settings() {
   const app = useApp();
@@ -47,6 +48,13 @@ export default function Settings() {
             {app.persisted === false && 'This browser has not promised to keep the data. Add the app to your Home Screen to make it durable. '}
             Everything is stored on this device only. Nothing is sent anywhere.
           </p>
+        </section>
+        <section className="panel">
+          <h2>About</h2>
+          <p className="muted">Sim Pack version {__APP_VERSION__}, built {new Date(__BUILD_TIME__).toLocaleString()}. The app works offline once it has loaded one time.</p>
+          <div className="actions">
+            <button className="btn" onClick={async () => setMsg(await checkForUpdate())}>Check for updates</button>
+          </div>
         </section>
         {msg && <p className="toast" role="status">{msg}</p>}
       </main>
